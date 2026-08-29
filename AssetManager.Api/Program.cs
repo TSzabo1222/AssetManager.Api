@@ -1,36 +1,41 @@
+using AssetManager.Api.Data;
+using Microsoft.EntityFrameworkCore;
+using System;
 
-namespace AssetManager.Api
+var builder = WebApplication.CreateBuilder(args);
+
+// --- Services regisztrálása ---
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// EF Core + SQL Server (LocalDB)
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// CORS - hogy az Angular (localhost:4200) hívhassa az API-t
+builder.Services.AddCors(options =>
 {
-    public class Program
+    options.AddPolicy("AllowAngularDev", policy =>
     {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
-            // Add services to the container.
+var app = builder.Build();
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-
-            var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
-
-            app.MapControllers();
-
-            app.Run();
-        }
-    }
+// --- HTTP pipeline ---
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(); // https://localhost:xxxx/swagger
 }
+
+app.UseHttpsRedirection();
+app.UseCors("AllowAngularDev");
+app.UseAuthorization();
+app.MapControllers();
+
+app.Run();
