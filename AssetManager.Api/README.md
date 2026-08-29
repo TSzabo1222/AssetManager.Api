@@ -1,67 +1,60 @@
-# IT Eszköz- és Erőforrás-kezelő Rendszer (Backend)
+# IT Asset & Resource Management System (Backend)
 
 ASP.NET Core Web API + Entity Framework Core + SQL Server (LocalDB).
 
-## Amit előre telepíteni kell
+## Prerequisites
 
 - .NET 8 SDK: https://dotnet.microsoft.com/download
-- SQL Server LocalDB (Visual Studio Community telepítővel automatikusan jön,
-  vagy külön: "SQL Server Express LocalDB" csomag)
-- (Az Angular részhez később) Node.js LTS + `npm install -g @angular/cli`
+- SQL Server LocalDB (comes automatically with Visual Studio Community, or install separately: "SQL Server Express LocalDB" package)
+- (For the Angular part, later) Node.js LTS + `npm install -g @angular/cli`
 
-## 1. Csomagok visszaállítása és build
+## 1. Restore packages and build
 
-Nyisd meg ezt a mappát terminálban, majd:
+Open this folder in a terminal, then:
 
 ```
 dotnet restore
 dotnet build
 ```
 
-## 2. EF Core migráció (adatbázis létrehozása)
+## 2. EF Core migration (create the database)
 
-Ha még nincs telepítve az EF Core CLI eszköz:
+If the EF Core CLI tool isn't installed yet:
 
 ```
 dotnet tool install --global dotnet-ef
 ```
 
-Ezután hozd létre az első migrációt és az adatbázist:
+Then create the initial migration and the database:
 
 ```
 dotnet ef migrations add InitialCreate
 dotnet ef database update
 ```
 
-Ez létrehozza a `AssetManagerDb` adatbázist a LocalDB-n, az `appsettings.json`-ban
-megadott connection string alapján.
+This creates the `AssetManagerDb` database on LocalDB, based on the connection string in `appsettings.json`.
 
-## 3. Backend futtatása
+## 3. Run the backend
 
 ```
 dotnet run
 ```
 
-A konzol kiírja, melyik porton fut (pl. `https://localhost:7001`).
-Nyisd meg a `https://localhost:7001/swagger` címet - ott interaktívan
-kipróbálhatod az összes végpontot Swagger UI-on keresztül, mielőtt
-Postmanban vagy Angularból hívnád.
+The console will print which port it's running on (e.g. `https://localhost:7001`). Open `https://localhost:7001/swagger` — there you can interactively try out every endpoint via Swagger UI before calling it from Postman or Angular.
 
-## 4. Tesztelés Postmanban
+## 4. Testing in Postman
 
-Hozz létre egy Postman collectiont az alábbi hívásokkal, majd exportáld
-és tedd a repóba egy `/postman` mappába:
+Create a Postman collection with the calls below, then export it and add it to the repo under a `/postman` folder:
 
-- `POST /api/employees` - alkalmazott létrehozása
-- `POST /api/assets` - eszköz létrehozása (Status automatikusan InStock lesz)
-- `POST /api/assets/{id}/assign` - body: `{ "employeeId": 1 }`
+- `POST /api/employees` — create an employee
+- `POST /api/assets` — create an asset (Status will automatically be InStock)
+- `POST /api/assets/{id}/assign` — body: `{ "employeeId": 1 }`
 - `POST /api/assets/{id}/return`
-- `GET /api/assets/{id}/history` - végignézed a napló bejegyzéseket
+- `GET /api/assets/{id}/history` — review the log entries
 
-## 5. Angular kapcsolódás
+## 5. Connecting Angular
 
-A `frontend-starter` mappában van egy kész `asset.model.ts` és
-`asset.service.ts`. Ha létrehoztad az Angular projektet:
+The `frontend-starter` folder contains a ready-made `asset.model.ts` and `asset.service.ts`. Once you've created the Angular project:
 
 ```
 ng new asset-manager-ui --routing --style=scss
@@ -69,17 +62,14 @@ cd asset-manager-ui
 ng add @angular/material
 ```
 
-Másold be a két fájlt a `src/app/` alá (pl. egy `services` mappába),
-és importáld be az `HttpClientModule`-t az `app.module.ts`-be (vagy
-standalone esetén az `app.config.ts`-be), hogy a service működjön.
+Copy the two files into `src/app/` (e.g. into a `services` folder), and import `HttpClientModule` into `app.module.ts` (or, for a standalone setup, into `app.config.ts`) so the service works.
 
-Állítsd be a service tetején lévő `API_URL`-t a saját backended
-tényleges portjára (amit a `dotnet run` kiírt).
+Update the `API_URL` at the top of the service to match your backend's actual port (the one printed by `dotnet run`).
 
-## Következő lépések (lásd a build-tervet)
+## Next steps (see the build plan)
 
-1. Employees és Inventory modulok Angular oldalon (táblázat + form)
-2. Dashboard komponens összesítő számokkal
-3. JWT alapú authentikáció + role-based guardok
-4. xUnit tesztek a `Assign`/`Return` logikára
-5. GitHub Actions workflow (build + teszt minden push-nál)
+1. Employees and Inventory modules on the Angular side (table + form)
+2. Dashboard component with summary numbers
+3. JWT-based authentication + role-based guards
+4. xUnit tests for the `Assign`/`Return` logic
+5. GitHub Actions workflow (build + test on every push)
