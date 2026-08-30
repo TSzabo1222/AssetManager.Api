@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>Manage {{ data.asset.name }}</h2>
+
+<div mat-dialog-content>
+  <p class="current-status">
+    Current status:
+    <strong>{{ data.asset.status === AssetStatus.Assigned ? 'Assigned' : 'In stock' }}</strong>
+  </p>
+
+  <ng-container *ngIf="data.asset.status !== AssetStatus.Assigned; else assignedBlock">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Select employee</mat-label>
+      <mat-select [(ngModel)]="selectedEmployeeId">
+        <mat-option *ngFor="let emp of employees" [value]="emp.id">
+          {{ emp.fullName }} ({{ emp.department }})
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </ng-container>
+
+  <ng-template #assignedBlock>
+    <p>Currently held by: <strong>{{ data.asset.assignedToEmployee?.fullName }}</strong></p>
+  </ng-template>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-flat-button color="primary" *ngIf="data.asset.status !== AssetStatus.Assigned"
+          [disabled]="!selectedEmployeeId" (click)="confirmAssign()">Assign</button>
+  <button mat-flat-button color="warn" *ngIf="data.asset.status === AssetStatus.Assigned"
+          (click)="confirmReturn()">Return</button>
+</div>

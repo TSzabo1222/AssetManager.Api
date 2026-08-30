@@ -1,0 +1,31 @@
+:root {
+  --color-bg: #F5F3FF;
+  --color-surface: #FFFFFF;
+  --color-primary: #6D4AFF;
+  --color-primary-dark: #4E2FD9;
+  --color-border: #E7E2FA;
+  --color-text: #211A3D;
+  --color-text-muted: #6E6690;
+
+  --status-instock-bg: #DCFCE7;
+  --status-instock-text: #059669;
+  --status-assigned-bg: #DBEAFE;
+  --status-assigned-text: #2563EB;
+  --status-repair-bg: #FEF3C7;
+  --status-repair-text: #D97706;
+  --status-retired-bg: #F1EFFB;
+  --status-retired-text: #7C6FA8;
+
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background: var(--color-bg);
+  font-family: var(--font-body);
+  color: var(--color-text);
+}

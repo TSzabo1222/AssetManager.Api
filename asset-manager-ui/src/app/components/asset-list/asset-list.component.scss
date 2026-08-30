@@ -1,0 +1,94 @@
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 32px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 24px;
+
+  .eyebrow {
+    margin: 0 0 4px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .add-button {
+    background-color: var(--color-primary) !important;
+    color: white !important;
+    height: 42px;
+    border-radius: 8px;
+  }
+}
+
+.table-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(109, 74, 255, 0.08);
+}
+
+table { width: 100%; }
+
+th.mat-mdc-header-cell {
+  background: #FAF9FF;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--color-border);
+}
+
+td.mat-mdc-cell {
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-size: 14px;
+}
+
+tr.mat-mdc-row:hover { background: #FAF9FF; }
+
+.serial {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: #F1EFFB;
+  padding: 3px 8px;
+  border-radius: 6px;
+  color: var(--color-primary-dark);
+}
+
+.muted { color: var(--color-text-muted); }
+
+.status-chip {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-instock { background: var(--status-instock-bg); color: var(--status-instock-text); }
+.status-assigned { background: var(--status-assigned-bg); color: var(--status-assigned-text); }
+.status-repair { background: var(--status-repair-bg); color: var(--status-repair-text); }
+.status-retired { background: var(--status-retired-bg); color: var(--status-retired-text); }
+
+.empty-state {
+  padding: 48px;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}

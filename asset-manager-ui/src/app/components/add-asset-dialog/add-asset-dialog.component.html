@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>Add new asset</h2>
+
+<div mat-dialog-content class="form-content">
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Name</mat-label>
+    <input matInput [(ngModel)]="name" placeholder="e.g. Dell Latitude 5420">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Type</mat-label>
+    <input matInput [(ngModel)]="type" placeholder="e.g. Laptop, Monitor, Phone">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Serial number</mat-label>
+    <input matInput [(ngModel)]="serialNumber" placeholder="e.g. SN-001234">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Purchase date</mat-label>
+    <input matInput type="date" [(ngModel)]="purchaseDate">
+  </mat-form-field>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-flat-button color="primary" [disabled]="!isValid" (click)="confirmCreate()">Create</button>
+</div>
