@@ -1,7 +1,7 @@
 namespace AssetManager.Api.Models
 {
-    // Napló: ki, mikor kapott meg egy eszközt, és mikor adta vissza.
-    // Ez teszi lehetővé, hogy egy eszköz teljes "életútját" vissza tudd nézni.
+    // Log: who received which asset, and when they returned it.
+    // This lets you look back at an asset's full lifecycle.
     public class AssignmentHistory
     {
         public int Id { get; set; }
@@ -13,6 +13,6 @@ namespace AssetManager.Api.Models
         public Employee Employee { get; set; } = null!;
 
         public DateTime AssignedDate { get; set; }
-        public DateTime? ReturnedDate { get; set; }  // null = még nála van
+        public DateTime? ReturnedDate { get; set; }  // null = still with the employee
     }
 }

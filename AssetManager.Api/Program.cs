@@ -1,10 +1,9 @@
 using AssetManager.Api.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// --- Services regisztrálása ---
+// --- Register services ---
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -13,7 +12,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// CORS - hogy az Angular (localhost:4200) hívhassa az API-t
+// CORS - so Angular (localhost:4200) can call the API
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularDev", policy =>
@@ -30,7 +29,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(); // https://localhost:xxxx/swagger
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

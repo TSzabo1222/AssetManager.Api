@@ -14,14 +14,14 @@ namespace AssetManager.Api.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Egy Employee - sok Asset (1-to-many)
+            // One Employee - many Assets (1-to-many)
             modelBuilder.Entity<Asset>()
                 .HasOne(a => a.AssignedToEmployee)
                 .WithMany(e => e.AssignedAssets)
                 .HasForeignKey(a => a.AssignedToEmployeeId)
-                .OnDelete(DeleteBehavior.SetNull); // ha törlöd az employee-t, az asset ne vesszen el
+                .OnDelete(DeleteBehavior.SetNull); // deleting the employee shouldn't delete the asset
 
-            // AssignmentHistory kapcsolatok
+            // AssignmentHistory relationships
             modelBuilder.Entity<AssignmentHistory>()
                 .HasOne(h => h.Asset)
                 .WithMany()
@@ -34,7 +34,7 @@ namespace AssetManager.Api.Data
                 .HasForeignKey(h => h.EmployeeId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Sorozatszám legyen egyedi
+            // Serial number should be unique
             modelBuilder.Entity<Asset>()
                 .HasIndex(a => a.SerialNumber)
                 .IsUnique();

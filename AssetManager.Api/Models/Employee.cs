@@ -9,7 +9,7 @@ namespace AssetManager.Api.Models
         public string Position { get; set; } = string.Empty;
         public DateTime HireDate { get; set; }
 
-        // Navigation property: egy alkalmazotthoz több eszköz tartozhat
+        // Navigation property: one employee can have many assets
         public ICollection<Asset> AssignedAssets { get; set; } = new List<Asset>();
     }
 }

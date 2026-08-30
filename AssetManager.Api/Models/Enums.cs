@@ -1,15 +1,15 @@
 namespace AssetManager.Api.Models
 {
-    // Egy eszköz aktuális állapota
+    // Current status of an asset
     public enum AssetStatus
     {
-        InStock,    // raktáron, kiadható
-        Assigned,   // ki van adva valakinek
-        Retired,    // selejtezve
-        Repair      // javítás alatt
+        InStock,
+        Assigned,
+        Retired,
+        Repair
     }
 
-    // Felhasználói szerepkörök (későbbi auth-hoz)
+    // User roles (for future auth)
     public enum UserRole
     {
         Admin,

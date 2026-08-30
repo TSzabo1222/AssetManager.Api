@@ -41,7 +41,7 @@ namespace AssetManager.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, InventoryItem updated)
         {
-            if (id != updated.Id) return BadRequest("Az ID nem egyezik.");
+            if (id != updated.Id) return BadRequest("The ID does not match.");
 
             var existing = await _context.InventoryItems.FindAsync(id);
             if (existing == null) return NotFound();
@@ -69,10 +69,9 @@ namespace AssetManager.Api.Controllers
 
         public class AdjustRequest
         {
-            public int Amount { get; set; } // pozitív = bevételezés, negatív = kivétel
+            public int Amount { get; set; } // positive = stock in, negative = stock out
         }
 
-        // POST: api/inventory/5/adjust
         [HttpPost("{id}/adjust")]
         public async Task<IActionResult> AdjustQuantity(int id, AdjustRequest request)
         {
@@ -81,7 +80,7 @@ namespace AssetManager.Api.Controllers
 
             var newQuantity = item.Quantity + request.Amount;
             if (newQuantity < 0)
-                return BadRequest("Nincs elég készleten lévő mennyiség.");
+                return BadRequest("Not enough quantity in stock.");
 
             item.Quantity = newQuantity;
             await _context.SaveChangesAsync();

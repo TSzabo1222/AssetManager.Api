@@ -1,7 +1,7 @@
 namespace AssetManager.Api.Models
 {
-    // Ez a "szabad készlet" - kellékanyagok, amikből lehet fogyasztani
-    // (pl. egerek, kábelek), nem egyedi sorozatszámos eszközök.
+    // This is the "free stock" - consumable supplies (e.g. mice, cables),
+    // not individually serialized assets.
     public class InventoryItem
     {
         public int Id { get; set; }
