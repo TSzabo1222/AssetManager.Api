@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Add new employee</h2>
+<h2 mat-dialog-title>{{ isEditMode ? 'Edit employee' : 'Add new employee' }}</h2>
 
 <div mat-dialog-content class="form-content">
   <mat-form-field appearance="outline" class="full-width">
@@ -29,5 +29,7 @@
 
 <div mat-dialog-actions align="end">
   <button mat-button (click)="cancel()">Cancel</button>
-  <button mat-flat-button color="primary" [disabled]="!isValid" (click)="confirmCreate()">Create</button>
+  <button mat-flat-button color="primary" [disabled]="!isValid" (click)="confirmCreate()">
+    {{ isEditMode ? 'Save' : 'Create' }}
+  </button>
 </div>

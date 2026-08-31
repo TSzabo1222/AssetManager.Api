@@ -16,4 +16,12 @@ export class EmployeeService {
   create(employee: Partial<Employee>): Observable<Employee> {
     return this.http.post<Employee>(API_URL, employee);
   }
+
+  update(id: number, employee: Employee): Observable<void> {
+    return this.http.put<void>(`${API_URL}/${id}`, employee);
+  }
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${API_URL}/${id}`);
+  }
 }

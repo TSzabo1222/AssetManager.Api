@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Inject, Optional } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,8 +20,21 @@ export class AddEmployeeDialogComponent {
   department = '';
   position = '';
   hireDate: string = new Date().toISOString().substring(0, 10);
+  isEditMode = false;
 
-  constructor(public dialogRef: MatDialogRef<AddEmployeeDialogComponent>) {}
+  constructor(
+    public dialogRef: MatDialogRef<AddEmployeeDialogComponent>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: Employee | null
+  ) {
+    if (data) {
+      this.isEditMode = true;
+      this.fullName = data.fullName;
+      this.email = data.email;
+      this.department = data.department;
+      this.position = data.position;
+      this.hireDate = data.hireDate?.substring(0, 10);
+    }
+  }
 
   get isValid(): boolean {
     return !!this.fullName && !!this.email;
@@ -29,14 +42,14 @@ export class AddEmployeeDialogComponent {
 
   confirmCreate(): void {
     if (!this.isValid) return;
-    const newEmployee: Partial<Employee> = {
+    const employee: Partial<Employee> = {
       fullName: this.fullName,
       email: this.email,
       department: this.department,
       position: this.position,
       hireDate: this.hireDate
     };
-    this.dialogRef.close(newEmployee);
+    this.dialogRef.close(employee);
   }
 
   cancel(): void {

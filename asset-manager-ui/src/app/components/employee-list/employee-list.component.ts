@@ -17,7 +17,7 @@ import { AddEmployeeDialogComponent } from '../add-employee-dialog/add-employee-
 })
 export class EmployeeListComponent implements OnInit {
   employees: Employee[] = [];
-  displayedColumns: string[] = ['fullName', 'email', 'department', 'position', 'hireDate'];
+  displayedColumns: string[] = ['fullName', 'email', 'department', 'position', 'hireDate', 'actions'];
 
   constructor(private employeeService: EmployeeService, private dialog: MatDialog) {}
 
@@ -40,6 +40,25 @@ export class EmployeeListComponent implements OnInit {
         next: () => this.load(),
         error: (err) => console.error('Error creating employee:', err)
       });
+    });
+  }
+
+  openEditDialog(employee: Employee): void {
+    const ref = this.dialog.open(AddEmployeeDialogComponent, { data: employee });
+    ref.afterClosed().subscribe((updated) => {
+      if (!updated) return;
+      this.employeeService.update(employee.id, { ...updated, id: employee.id }).subscribe({
+        next: () => this.load(),
+        error: (err) => console.error('Error updating employee:', err)
+      });
+    });
+  }
+
+  deleteEmployee(employee: Employee): void {
+    if (!confirm(`Delete "${employee.fullName}"? This cannot be undone.`)) return;
+    this.employeeService.delete(employee.id).subscribe({
+      next: () => this.load(),
+      error: (err) => console.error('Error deleting employee:', err)
     });
   }
 }
