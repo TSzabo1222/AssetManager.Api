@@ -1,1 +1,35 @@
-<p>add-inventory-dialog works!</p>
+<h2 mat-dialog-title>{{ isEditMode ? 'Edit item' : 'Add inventory item' }}</h2>
+
+<div mat-dialog-content class="form-content">
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Name</mat-label>
+    <input matInput [(ngModel)]="name">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>SKU</mat-label>
+    <input matInput [(ngModel)]="sku">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Quantity</mat-label>
+    <input matInput type="number" [(ngModel)]="quantity">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Category</mat-label>
+    <input matInput [(ngModel)]="category">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Location</mat-label>
+    <input matInput [(ngModel)]="location">
+  </mat-form-field>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-flat-button color="primary" [disabled]="!isValid" (click)="confirmCreate()">
+    {{ isEditMode ? 'Save' : 'Create' }}
+  </button>
+</div>

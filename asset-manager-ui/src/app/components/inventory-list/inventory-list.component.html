@@ -1,1 +1,59 @@
-<p>inventory-list works!</p>
+<div class="page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Asset Manager</p>
+      <h1>Inventory</h1>
+    </div>
+    <button mat-flat-button color="primary" class="add-button" (click)="openAddDialog()">
+      <mat-icon>add</mat-icon>
+      New item
+    </button>
+  </header>
+
+  <div class="table-card">
+    <table mat-table [dataSource]="items">
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let i">{{ i.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="sku">
+        <th mat-header-cell *matHeaderCellDef>SKU</th>
+        <td mat-cell *matCellDef="let i"><span class="serial">{{ i.sku }}</span></td>
+      </ng-container>
+
+      <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef>Quantity</th>
+        <td mat-cell *matCellDef="let i">{{ i.quantity }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef>Category</th>
+        <td mat-cell *matCellDef="let i">{{ i.category }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="location">
+        <th mat-header-cell *matHeaderCellDef>Location</th>
+        <td mat-cell *matCellDef="let i">{{ i.location }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let i">
+          <button mat-icon-button (click)="openEditDialog(i)" aria-label="Edit">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deleteItem(i)" aria-label="Delete">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <div class="empty-state" *ngIf="items.length === 0">No inventory items added yet.</div>
+  </div>
+</div>

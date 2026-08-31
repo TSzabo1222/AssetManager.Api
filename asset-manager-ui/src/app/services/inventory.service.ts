@@ -16,4 +16,12 @@ export class InventoryService {
   create(item: Partial<InventoryItem>): Observable<InventoryItem> {
     return this.http.post<InventoryItem>(API_URL, item);
   }
+
+  update(id: number, item: InventoryItem): Observable<void> {
+    return this.http.put<void>(`${API_URL}/${id}`, item);
+  }
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${API_URL}/${id}`);
+  }
 }
