@@ -1,1 +1,8 @@
-<app-asset-list></app-asset-list>
+<mat-toolbar class="app-toolbar">
+  <span class="brand">Asset Manager</span>
+  <a routerLink="/assets" routerLinkActive="active-link">Assets</a>
+  <a routerLink="/employees" routerLinkActive="active-link">Employees</a>
+  <a routerLink="/inventory" routerLinkActive="active-link">Inventory</a>
+</mat-toolbar>
+
+<router-outlet></router-outlet>

@@ -24,3 +24,12 @@ export interface Asset {
   assignedToEmployeeId?: number | null;
   assignedToEmployee?: Employee | null;
 }
+
+export interface InventoryItem {
+  id: number;
+  name: string;
+  sku: string;
+  quantity: number;
+  category: string;
+  location: string;
+}
