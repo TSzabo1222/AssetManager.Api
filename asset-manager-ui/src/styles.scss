@@ -6,6 +6,7 @@
   --color-border: #E7E2FA;
   --color-text: #211A3D;
   --color-text-muted: #6E6690;
+  --nav-active-bg: #F1EFFB;
 
   --status-instock-bg: #DCFCE7;
   --status-instock-text: #059669;
@@ -30,8 +31,8 @@ html, body {
   color: var(--color-text);
 }
 
-body {
-  transition: background-color 0.25s ease, color 0.25s ease;
+*, *::before, *::after {
+  transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
 }
 
 /* --- Shared layout for list pages (Assets, Employees, Inventory) --- */
@@ -162,7 +163,7 @@ body {
 
     &.active-link {
       color: var(--color-primary);
-      background: #F1EFFB;
+      background: var(--nav-active-bg);
     }
   }
 
@@ -216,6 +217,7 @@ body {
   --color-border: #362E4A;
   --color-text: #F1EFFB;
   --color-text-muted: #A79FC4;
+  --nav-active-bg: rgba(167, 139, 250, 0.15);
 
   --status-instock-bg: rgba(16, 185, 129, 0.18);
   --status-instock-text: #34D399;
