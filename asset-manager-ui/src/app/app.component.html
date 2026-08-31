@@ -3,6 +3,12 @@
   <a routerLink="/assets" routerLinkActive="active-link">Assets</a>
   <a routerLink="/employees" routerLinkActive="active-link">Employees</a>
   <a routerLink="/inventory" routerLinkActive="active-link">Inventory</a>
+
+  <span class="spacer"></span>
+
+  <button mat-icon-button (click)="theme.toggle()" class="theme-toggle" aria-label="Toggle dark mode">
+    <mat-icon>{{ theme.isDark() ? 'dark_mode' : 'light_mode' }}</mat-icon>
+  </button>
 </mat-toolbar>
 
 <router-outlet></router-outlet>

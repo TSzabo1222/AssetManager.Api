@@ -30,23 +30,27 @@ html, body {
   color: var(--color-text);
 }
 
+body {
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
 /* --- Shared layout for list pages (Assets, Employees, Inventory) --- */
 
 .page {
-  max-width: 1100px;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 48px 32px;
+  padding: 48px 48px;
 }
 
 .page-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 
   .eyebrow {
-    margin: 0 0 4px;
-    font-size: 13px;
+    margin: 0 0 6px;
+    font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -55,7 +59,7 @@ html, body {
 
   h1 {
     margin: 0;
-    font-size: 28px;
+    font-size: 34px;
     font-weight: 700;
     color: var(--color-text);
   }
@@ -63,7 +67,9 @@ html, body {
   .add-button {
     background-color: var(--color-primary) !important;
     color: white !important;
-    height: 42px;
+    height: 48px;
+    font-size: 15px;
+    padding: 0 20px !important;
     border-radius: 8px;
   }
 }
@@ -81,26 +87,28 @@ html, body {
 .table-card th.mat-mdc-header-cell {
   background: #FAF9FF;
   color: var(--color-text-muted);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
   border-bottom: 1px solid var(--color-border);
+  padding: 28px 28px !important;
 }
 
 .table-card td.mat-mdc-cell {
   border-bottom: 1px solid var(--color-border);
   color: var(--color-text);
-  font-size: 14px;
+  font-size: 19px;
+  padding: 28px 28px !important;
 }
 
 .table-card tr.mat-mdc-row:hover { background: #FAF9FF; }
 
 .serial {
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 17px;
   background: #F1EFFB;
-  padding: 3px 8px;
+  padding: 4px 10px;
   border-radius: 6px;
   color: var(--color-primary-dark);
 }
@@ -109,9 +117,9 @@ html, body {
 
 .status-chip {
   display: inline-block;
-  padding: 4px 10px;
+  padding: 7px 16px;
   border-radius: 999px;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 600;
 }
 
@@ -121,10 +129,10 @@ html, body {
 .status-retired { background: var(--status-retired-bg); color: var(--status-retired-text); }
 
 .empty-state {
-  padding: 48px;
+  padding: 56px;
   text-align: center;
   color: var(--color-text-muted);
-  font-size: 14px;
+  font-size: 17px;
 }
 
 /* --- Top navigation --- */
@@ -157,4 +165,192 @@ html, body {
       background: #F1EFFB;
     }
   }
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+}
+
+/* --- Theme toggle button --- */
+
+.theme-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+  transition: transform 0.3s ease, background-color 0.2s ease;
+
+  mat-icon {
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
+  }
+}
+
+.theme-toggle:hover {
+  background: rgba(109, 74, 255, 0.1);
+  transform: rotate(20deg);
+}
+
+.dark-mode .theme-toggle {
+  color: var(--color-primary);
+}
+
+.dark-mode .theme-toggle:hover {
+  background: rgba(167, 139, 250, 0.15);
+}
+
+/* --- Dark mode palette --- */
+
+.dark-mode {
+  --color-bg: #17131F;
+  --color-surface: #221C30;
+  --color-primary: #A78BFA;
+  --color-primary-dark: #C4B5FD;
+  --color-border: #362E4A;
+  --color-text: #F1EFFB;
+  --color-text-muted: #A79FC4;
+
+  --status-instock-bg: rgba(16, 185, 129, 0.18);
+  --status-instock-text: #34D399;
+  --status-assigned-bg: rgba(59, 130, 246, 0.18);
+  --status-assigned-text: #60A5FA;
+  --status-repair-bg: rgba(245, 158, 11, 0.18);
+  --status-repair-text: #FBBF24;
+  --status-retired-bg: rgba(167, 159, 196, 0.15);
+  --status-retired-text: #A79FC4;
+}
+
+.dark-mode .serial {
+  background: rgba(167, 139, 250, 0.15);
+}
+
+/* Force Material table components to respect dark mode */
+.dark-mode .table-card,
+.dark-mode .mat-mdc-table {
+  background: var(--color-surface) !important;
+}
+
+.dark-mode th.mat-mdc-header-cell {
+  background: #1D1829 !important;
+  color: var(--color-text-muted) !important;
+  border-bottom-color: var(--color-border) !important;
+}
+
+.dark-mode td.mat-mdc-cell {
+  background: var(--color-surface) !important;
+  color: var(--color-text) !important;
+  border-bottom-color: var(--color-border) !important;
+}
+
+.dark-mode tr.mat-mdc-row:hover td.mat-mdc-cell {
+  background: #1D1829 !important;
+}
+
+.dark-mode .mat-mdc-icon-button .mat-icon {
+  color: var(--color-text-muted) !important;
+}
+
+.dark-mode .empty-state {
+  color: var(--color-text-muted) !important;
+}
+
+/* --- Dark mode for Material dialogs and form fields --- */
+
+.dark-mode .mat-mdc-dialog-container .mdc-dialog__surface {
+  background: var(--color-surface) !important;
+  color: var(--color-text) !important;
+}
+
+.dark-mode .mat-mdc-dialog-title,
+.dark-mode .mat-mdc-dialog-content {
+  color: var(--color-text) !important;
+}
+
+.dark-mode .mat-mdc-form-field {
+  --mdc-outlined-text-field-outline-color: var(--color-border);
+  --mdc-outlined-text-field-hover-outline-color: var(--color-primary);
+  --mdc-outlined-text-field-input-text-color: var(--color-text);
+  --mdc-outlined-text-field-label-text-color: var(--color-text-muted);
+}
+
+.dark-mode .mat-mdc-form-field input,
+.dark-mode .mat-mdc-form-field textarea {
+  color: var(--color-text) !important;
+}
+
+.dark-mode .mat-mdc-select-value,
+.dark-mode .mat-mdc-select-arrow {
+  color: var(--color-text) !important;
+}
+
+.dark-mode .mat-mdc-option {
+  background: var(--color-surface) !important;
+  color: var(--color-text) !important;
+}
+
+.dark-mode .mat-mdc-option:hover {
+  background: #1D1829 !important;
+}
+
+.dark-mode .cdk-overlay-container .mat-mdc-select-panel {
+  background: var(--color-surface) !important;
+}
+
+.dark-mode .mat-mdc-dialog-actions button.mat-mdc-button {
+  color: var(--color-text-muted) !important;
+}
+
+/* --- Bigger, more readable dialogs (Add/Edit forms) --- */
+
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  min-width: 460px !important;
+  padding: 8px;
+}
+
+.mat-mdc-dialog-title {
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  margin-bottom: 14px !important;
+}
+
+.mat-mdc-dialog-content {
+  font-size: 17px !important;
+}
+
+.form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 400px;
+  padding-top: 10px;
+}
+
+.form-content .mat-mdc-form-field {
+  font-size: 18px;
+}
+
+.form-content .mat-mdc-text-field-wrapper {
+  height: 60px;
+}
+
+.mat-mdc-dialog-actions {
+  padding: 18px 24px !important;
+  gap: 10px;
+}
+
+.mat-mdc-dialog-actions button {
+  font-size: 16px !important;
+  height: 46px !important;
+  padding: 0 22px !important;
+}
+
+.current-status {
+  font-size: 17px;
 }
