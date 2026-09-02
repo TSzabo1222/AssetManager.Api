@@ -1,0 +1,40 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <p class="eyebrow">Asset Manager</p>
+    <h1>{{ isRegisterMode ? 'Create an account' : 'Welcome back' }}</h1>
+
+    <form (ngSubmit)="submit()" class="form-content">
+      <mat-form-field appearance="outline" class="full-width" *ngIf="isRegisterMode">
+        <mat-label>Full name</mat-label>
+        <input matInput [(ngModel)]="fullName" name="fullName" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" [(ngModel)]="email" name="email" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" [(ngModel)]="password" name="password" required>
+      </mat-form-field>
+
+      <p class="error-text" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+      <button mat-flat-button color="primary" class="submit-button" type="submit" [disabled]="isLoading">
+        {{ isRegisterMode ? 'Create account' : 'Log in' }}
+      </button>
+    </form>
+
+    <p class="switch-text">
+      <ng-container *ngIf="!isRegisterMode">
+        Don't have an account?
+        <a (click)="toggleMode()">Sign up</a>
+      </ng-container>
+      <ng-container *ngIf="isRegisterMode">
+        Already have an account?
+        <a (click)="toggleMode()">Log in</a>
+      </ng-container>
+    </p>
+  </div>
+</div>

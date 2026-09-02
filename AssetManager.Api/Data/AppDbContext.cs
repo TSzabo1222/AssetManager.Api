@@ -11,6 +11,7 @@ namespace AssetManager.Api.Data
         public DbSet<Asset> Assets => Set<Asset>();
         public DbSet<InventoryItem> InventoryItems => Set<InventoryItem>();
         public DbSet<AssignmentHistory> AssignmentHistories => Set<AssignmentHistory>();
+        public DbSet<User> Users => Set<User>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,6 +38,11 @@ namespace AssetManager.Api.Data
             // Serial number should be unique
             modelBuilder.Entity<Asset>()
                 .HasIndex(a => a.SerialNumber)
+                .IsUnique();
+
+            // Email should be unique for users
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
                 .IsUnique();
         }
     }
