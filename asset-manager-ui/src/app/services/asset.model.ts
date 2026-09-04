@@ -51,3 +51,12 @@ export interface AuthResponse {
   email: string;
   role: string;
 }
+
+export interface ActivityLog {
+  id: number;
+  userName: string;
+  action: string;
+  entityType: string;
+  entityName: string;
+  timestamp: string;
+}

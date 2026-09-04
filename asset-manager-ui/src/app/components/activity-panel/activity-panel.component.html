@@ -1,0 +1,32 @@
+<button class="activity-tab" *ngIf="!isOpen" (click)="toggle()" aria-label="Open activity log">
+  <mat-icon>history</mat-icon>
+  <span>Activity</span>
+</button>
+
+<div class="activity-panel" [class.open]="isOpen">
+  <div class="activity-header">
+    <h2>Recent activity</h2>
+    <button class="close-btn" (click)="toggle()" aria-label="Close">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="activity-list">
+    <div class="activity-item" *ngFor="let log of logs">
+      <div class="activity-icon">
+        <mat-icon>{{ iconFor(log.action) }}</mat-icon>
+      </div>
+      <div class="activity-text">
+        <p><strong>{{ log.userName }}</strong> {{ log.action }} {{ log.entityType.toLowerCase() }}
+          <strong>{{ log.entityName }}</strong></p>
+        <span class="activity-time">{{ log.timestamp | date: 'MMM d, HH:mm' }}</span>
+      </div>
+    </div>
+
+    <div class="empty-activity" *ngIf="!isLoading && logs.length === 0">
+      No activity yet.
+    </div>
+  </div>
+</div>
+
+<div class="activity-backdrop" *ngIf="isOpen" (click)="toggle()"></div>

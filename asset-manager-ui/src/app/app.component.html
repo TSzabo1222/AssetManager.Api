@@ -19,3 +19,5 @@
 </mat-toolbar>
 
 <router-outlet></router-outlet>
+
+<app-activity-panel *ngIf="auth.isLoggedIn()"></app-activity-panel>
