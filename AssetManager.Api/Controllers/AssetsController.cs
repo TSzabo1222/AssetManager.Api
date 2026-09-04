@@ -1,5 +1,6 @@
 using AssetManager.Api.Data;
 using AssetManager.Api.Models;
+using AssetManager.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,11 +11,16 @@ namespace AssetManager.Api.Controllers
     public class AssetsController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IActivityLogger _activityLogger;
 
-        public AssetsController(AppDbContext context)
+        public AssetsController(AppDbContext context, IActivityLogger activityLogger)
         {
             _context = context;
+            _activityLogger = activityLogger;
         }
+
+        private string CurrentUserName =>
+            User.Identity?.Name ?? User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value ?? "Unknown user";
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Asset>>> GetAll([FromQuery] AssetStatus? status, [FromQuery] string? type)
@@ -44,9 +50,12 @@ namespace AssetManager.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<Asset>> Create(Asset asset)
         {
-            asset.Status = AssetStatus.InStock; // a new asset always starts in stock
+            asset.Status = AssetStatus.InStock;
             _context.Assets.Add(asset);
             await _context.SaveChangesAsync();
+
+            await _activityLogger.LogAsync(CurrentUserName, "created", "Asset", asset.Name);
+
             return CreatedAtAction(nameof(GetById), new { id = asset.Id }, asset);
         }
 
@@ -64,6 +73,8 @@ namespace AssetManager.Api.Controllers
             existing.PurchaseDate = updated.PurchaseDate;
 
             await _context.SaveChangesAsync();
+            await _activityLogger.LogAsync(CurrentUserName, "updated", "Asset", existing.Name);
+
             return NoContent();
         }
 
@@ -75,10 +86,11 @@ namespace AssetManager.Api.Controllers
 
             _context.Assets.Remove(asset);
             await _context.SaveChangesAsync();
+
+            await _activityLogger.LogAsync(CurrentUserName, "deleted", "Asset", asset.Name);
+
             return NoContent();
         }
-
-        // --- This part shows real business logic, not just CRUD ---
 
         public class AssignRequest
         {
@@ -97,7 +109,6 @@ namespace AssetManager.Api.Controllers
             var employee = await _context.Employees.FindAsync(request.EmployeeId);
             if (employee == null) return NotFound("Employee not found.");
 
-            // Business logic: status change + history entry in one transaction
             asset.Status = AssetStatus.Assigned;
             asset.AssignedToEmployeeId = employee.Id;
 
@@ -110,6 +121,8 @@ namespace AssetManager.Api.Controllers
             });
 
             await _context.SaveChangesAsync();
+            await _activityLogger.LogAsync(CurrentUserName, "assigned", "Asset", $"{asset.Name} to {employee.FullName}");
+
             return Ok(asset);
         }
 
@@ -122,7 +135,6 @@ namespace AssetManager.Api.Controllers
             if (asset.Status != AssetStatus.Assigned)
                 return BadRequest("This asset is not currently assigned to anyone.");
 
-            // Close the open (not yet returned) history entry
             var openHistory = await _context.AssignmentHistories
                 .Where(h => h.AssetId == asset.Id && h.ReturnedDate == null)
                 .OrderByDescending(h => h.AssignedDate)
@@ -135,6 +147,8 @@ namespace AssetManager.Api.Controllers
             asset.AssignedToEmployeeId = null;
 
             await _context.SaveChangesAsync();
+            await _activityLogger.LogAsync(CurrentUserName, "returned", "Asset", asset.Name);
+
             return Ok(asset);
         }
 

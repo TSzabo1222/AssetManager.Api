@@ -1,5 +1,6 @@
 using AssetManager.Api.Data;
 using AssetManager.Api.Models;
+using AssetManager.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,11 +11,16 @@ namespace AssetManager.Api.Controllers
     public class InventoryController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IActivityLogger _activityLogger;
 
-        public InventoryController(AppDbContext context)
+        public InventoryController(AppDbContext context, IActivityLogger activityLogger)
         {
             _context = context;
+            _activityLogger = activityLogger;
         }
+
+        private string CurrentUserName =>
+            User.Identity?.Name ?? User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value ?? "Unknown user";
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<InventoryItem>>> GetAll()
@@ -35,6 +41,9 @@ namespace AssetManager.Api.Controllers
         {
             _context.InventoryItems.Add(item);
             await _context.SaveChangesAsync();
+
+            await _activityLogger.LogAsync(CurrentUserName, "created", "Inventory item", item.Name);
+
             return CreatedAtAction(nameof(GetById), new { id = item.Id }, item);
         }
 
@@ -53,6 +62,8 @@ namespace AssetManager.Api.Controllers
             existing.Quantity = updated.Quantity;
 
             await _context.SaveChangesAsync();
+            await _activityLogger.LogAsync(CurrentUserName, "updated", "Inventory item", existing.Name);
+
             return NoContent();
         }
 
@@ -64,12 +75,15 @@ namespace AssetManager.Api.Controllers
 
             _context.InventoryItems.Remove(item);
             await _context.SaveChangesAsync();
+
+            await _activityLogger.LogAsync(CurrentUserName, "deleted", "Inventory item", item.Name);
+
             return NoContent();
         }
 
         public class AdjustRequest
         {
-            public int Amount { get; set; } // positive = stock in, negative = stock out
+            public int Amount { get; set; }
         }
 
         [HttpPost("{id}/adjust")]
@@ -84,6 +98,7 @@ namespace AssetManager.Api.Controllers
 
             item.Quantity = newQuantity;
             await _context.SaveChangesAsync();
+
             return Ok(item);
         }
     }
