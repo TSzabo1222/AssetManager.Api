@@ -1,4 +1,4 @@
-<mat-toolbar class="app-toolbar">
+<mat-toolbar class="app-toolbar" *ngIf="auth.isLoggedIn()">
   <span class="brand">Asset Manager</span>
   <a routerLink="/assets" routerLinkActive="active-link">Assets</a>
   <a routerLink="/employees" routerLinkActive="active-link">Employees</a>
@@ -6,8 +6,15 @@
 
   <span class="spacer"></span>
 
-  <button mat-icon-button (click)="theme.toggle()" class="theme-toggle" aria-label="Toggle dark mode">
+  <span class="user-name" *ngIf="auth.currentUser() as user">{{ user.fullName }}</span>
+
+  <button class="theme-toggle" (click)="theme.toggle()" aria-label="Toggle dark mode">
     <mat-icon>{{ theme.isDark() ? 'dark_mode' : 'light_mode' }}</mat-icon>
+  </button>
+
+  <button mat-button class="logout-button" (click)="auth.logout()">
+    <mat-icon>logout</mat-icon>
+    Log out
   </button>
 </mat-toolbar>
 

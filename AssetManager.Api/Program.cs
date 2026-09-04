@@ -19,6 +19,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddScoped<AssetManager.Api.Services.IActivityLogger, AssetManager.Api.Services.ActivityLogger>();
+
 // CORS - so Angular (localhost:4200) can call the API
 builder.Services.AddCors(options =>
 {
@@ -52,6 +54,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddAuthorization();
+
 
 var app = builder.Build();
 

@@ -12,17 +12,16 @@ namespace AssetManager.Api.Data
         public DbSet<InventoryItem> InventoryItems => Set<InventoryItem>();
         public DbSet<AssignmentHistory> AssignmentHistories => Set<AssignmentHistory>();
         public DbSet<User> Users => Set<User>();
+        public DbSet<ActivityLog> ActivityLogs => Set<ActivityLog>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // One Employee - many Assets (1-to-many)
             modelBuilder.Entity<Asset>()
                 .HasOne(a => a.AssignedToEmployee)
                 .WithMany(e => e.AssignedAssets)
                 .HasForeignKey(a => a.AssignedToEmployeeId)
-                .OnDelete(DeleteBehavior.SetNull); // deleting the employee shouldn't delete the asset
+                .OnDelete(DeleteBehavior.SetNull);
 
-            // AssignmentHistory relationships
             modelBuilder.Entity<AssignmentHistory>()
                 .HasOne(h => h.Asset)
                 .WithMany()
@@ -35,12 +34,10 @@ namespace AssetManager.Api.Data
                 .HasForeignKey(h => h.EmployeeId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Serial number should be unique
             modelBuilder.Entity<Asset>()
                 .HasIndex(a => a.SerialNumber)
                 .IsUnique();
 
-            // Email should be unique for users
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
